@@ -1,0 +1,50 @@
+version: '3'
+
+services:
+  postgres:
+    image: postgres:latest
+    container_name: postgres_container
+    environment:
+      POSTGRES_USER: airflow
+      POSTGRES_PASSWORD: airflow
+      POSTGRES_DB: retail_db
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+      - ./postgres-init:/docker-entrypoint-initdb.d 
+    
+  airflow:
+    image: apache/airflow:latest
+    container_name: airflow_container
+    environment:
+      AIRFLOW__CORE__EXECUTOR: LocalExecutor
+      AIRFLOW__DATABASE__SQL_ALCHEMY_CONN: postgresql+psycopg2://airflow:airflow@postgres:5432/retail_db
+      AIRFLOW__CORE__FERNET_KEY: 'dGhpc2lzYWZha2VrZXlmb3Jub3cubm90Zm9ycHJvZA=='
+      AIRFLOW__WEBSERVER__SECRET_KEY: 'mysecret'
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./dags:/opt/airflow/dags
+      - ./etl:/opt/airflow/etl
+      - ./data:/opt/airflow/data
+      - /var/run/docker.sock:/var/run/docker.sock 
+    command: airflow standalone
+    depends_on:
+      - postgres
+
+  dbt:
+    image: ghcr.io/dbt-labs/dbt-postgres:1.7.5
+    container_name: dbt_container
+    volumes:
+      - ./dbt_project/retail_dbt:/usr/app
+    working_dir: /usr/app
+    environment:
+      DBT_PROFILES_DIR: /usr/app
+    entrypoint: ["/bin/bash", "-c"]        
+    command: ["tail -f /dev/null"]         
+    depends_on:
+      - postgres
+
+volumes:
+  pgdata:

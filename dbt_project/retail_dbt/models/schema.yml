@@ -1,0 +1,7 @@
+version: 2
+
+sources:
+  - name: data_etl    # 👈 matches first arg of `source()`
+    schema: data_etl  # 👈 actual Postgres schema
+    tables:
+      - name: sales_clean  # 👈 actual table name
