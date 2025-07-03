@@ -14,9 +14,15 @@ services:
       - pgdata:/var/lib/postgresql/data
       - ./postgres-init:/docker-entrypoint-initdb.d 
     
-  airflow:
-    image: apache/airflow:latest
+  airflow:  
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: airflow-pyspark:latest
     container_name: airflow_container
+  #  airflow:
+  #   image: apache/airflow:latest
+  #   container_name: airflow_container
     environment:
       AIRFLOW__CORE__EXECUTOR: LocalExecutor
       AIRFLOW__DATABASE__SQL_ALCHEMY_CONN: postgresql+psycopg2://airflow:airflow@postgres:5432/retail_db
