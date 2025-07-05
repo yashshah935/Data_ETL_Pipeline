@@ -5,3 +5,4 @@ sources:
     schema: data_etl  # 👈 actual Postgres schema
     tables:
       - name: sales_clean  # 👈 actual table name
+      - name : raw_taxi_data  # 👈 actual table name

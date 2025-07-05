@@ -7,7 +7,7 @@ services:
     environment:
       POSTGRES_USER: airflow
       POSTGRES_PASSWORD: airflow
-      POSTGRES_DB: retail_db
+      POSTGRES_DB: analytics
     ports:
       - "5432:5432"
     volumes:
@@ -25,7 +25,7 @@ services:
   #   container_name: airflow_container
     environment:
       AIRFLOW__CORE__EXECUTOR: LocalExecutor
-      AIRFLOW__DATABASE__SQL_ALCHEMY_CONN: postgresql+psycopg2://airflow:airflow@postgres:5432/retail_db
+      AIRFLOW__DATABASE__SQL_ALCHEMY_CONN: postgresql+psycopg2://airflow:airflow@postgres:5432/analytics
       AIRFLOW__CORE__FERNET_KEY: 'dGhpc2lzYWZha2VrZXlmb3Jub3cubm90Zm9ycHJvZA=='
       AIRFLOW__WEBSERVER__SECRET_KEY: 'mysecret'
     ports:
