@@ -1,0 +1,1 @@
+SELECT * FROM {{source("data_etl", "raw_taxi_data")}}

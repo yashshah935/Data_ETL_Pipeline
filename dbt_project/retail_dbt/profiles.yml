@@ -6,7 +6,7 @@ retail_dbt:
       host: postgres         # 👈 use service name (from docker-compose)
       user: airflow
       password: airflow
-      dbname: retail_db
+      dbname: analytics
       schema: data_etl      # 👈 schema where models will be built
       port: 5432
       threads: 1
